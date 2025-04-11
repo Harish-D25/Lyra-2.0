@@ -36,11 +36,17 @@ while True:
         print(f"  [{i}] {past}")
 
     # Predict intent
-    intent = predict_intent(user_input.lower())
+    # Get prediction + confidence
+    X = vectorizer.transform([user_input])
+    probabilities = clf.predict_proba(X)[0]
+    max_confidence = max(probabilities)
+    intent = clf.classes_[probabilities.argmax()]
+
 
     # Handle intent
-    if confidence < 0.5:
-        print("Assistant: Not sure what you meant there 🤔 Can you rephrase?")
+    if max_confidence < 0.5:
+        print(f"Assistant: Hmm, I'm only {round(max_confidence*100)}% sure what you meant 🤔 Can you rephrase?")
+        continue
     elif intent == "get_name":
         print("Assistant: I'm Trail, your experimental AI buddy 😎")
     elif intent == "get_feeling":
