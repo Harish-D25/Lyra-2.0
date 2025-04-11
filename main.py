@@ -1,12 +1,22 @@
 import nltk
+import joblib
 from nltk.tokenize import sent_tokenize
 from collections import deque
 
-# Download if not already present
+# Download punkt once
 nltk.download('punkt')
 
-# Store last few messages to simulate "context"
-context_memory = deque(maxlen=5)  # stores last 5 inputs
+# Load the trained intent classifier and vectorizer
+clf = joblib.load("intent_model.pkl")
+vectorizer = joblib.load("vectorizer.pkl")
+
+# Context memory
+context_memory = deque(maxlen=5)
+
+# Predict intent using your model
+def predict_intent(text):
+    vec = vectorizer.transform([text])
+    return clf.predict(vec)[0]
 
 print("🧠 Welcome to Trail-AI! Type 'exit' to quit.\n")
 
@@ -20,18 +30,28 @@ while True:
     # Store input in context
     context_memory.append(user_input)
 
-    # Just for now: Simple echo + context preview
     print("\n🧠 Assistant is thinking...")
     print("📌 Context so far:")
-
     for i, past in enumerate(context_memory, 1):
         print(f"  [{i}] {past}")
 
-    # VERY basic reply for now
-    if "name" in user_input.lower():
-        print("Assistant: You can call me Trail, your experimental AI buddy 😎")
-    elif "how are you" in user_input.lower():
+    # Predict intent
+    intent = predict_intent(user_input.lower())
+
+    # Handle intent
+    if intent == "get_name":
+        print("Assistant: I'm Trail, your experimental AI buddy 😎")
+    elif intent == "get_feeling":
         print("Assistant: I'm vibing in your CPU, dude. All good!")
+    elif intent == "joke":
+        print("Assistant: Why don't robots ever get tired? Because they recharge! ⚡")
+    elif intent == "capabilities":
+        print("Assistant: I can chat, remember what you say, and get smarter over time 💡")
+    elif intent == "weather":
+        print("Assistant: I'm not wired into weather APIs yet, but I will be soon ⛅")
+    elif intent == "exit":
+        print("Assistant: Peace out! ✌️")
+        break
     else:
         print("Assistant: That's interesting... tell me more!")
 
