@@ -39,7 +39,9 @@ while True:
     intent = predict_intent(user_input.lower())
 
     # Handle intent
-    if intent == "get_name":
+    if confidence < 0.5:
+        print("Assistant: Not sure what you meant there 🤔 Can you rephrase?")
+    elif intent == "get_name":
         print("Assistant: I'm Trail, your experimental AI buddy 😎")
     elif intent == "get_feeling":
         print("Assistant: I'm vibing in your CPU, dude. All good!")
@@ -49,6 +51,8 @@ while True:
         print("Assistant: I can chat, remember what you say, and get smarter over time 💡")
     elif intent == "weather":
         print("Assistant: I'm not wired into weather APIs yet, but I will be soon ⛅")
+    elif intent == "greeting":
+        print("Assistant: Yo! I'm Trail 😎 What's on your mind?")
     elif intent == "exit":
         print("Assistant: Peace out! ✌️")
         break

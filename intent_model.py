@@ -4,15 +4,33 @@ import joblib
 
 # Sample data
 samples = [
+    # get_name
     ("what's your name", "get_name"),
     ("who are you", "get_name"),
+    
+    # get_feeling
     ("how are you", "get_feeling"),
+    ("how do you feel", "get_feeling"),
+    
+    # capabilities
     ("what can you do", "capabilities"),
+    ("what are your features", "capabilities"),
+
+    # joke
     ("tell me a joke", "joke"),
+    ("make me laugh", "joke"),
+
+    # exit
     ("exit", "exit"),
     ("bye", "exit"),
-    ("what is the weather like today", "weather"),
+    ("goodbye", "exit"),
+
+    # greeting
+    ("hi", "greeting"),
+    ("hello", "greeting"),
+    ("yo dude", "greeting"),
 ]
+
 
 # Split into texts and labels
 X = [x[0] for x in samples]
